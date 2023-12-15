@@ -1,8 +1,14 @@
+// import { OrganizationSwitcher, auth } from '@clerk/nextjs';
 import React from 'react';
 
 const OrganizationIdPage = () => {
+	// const { userId, orgId } = auth();
+
 	return (
-		<div>OrganizationIdPage</div>
+		<div>
+			{/* <OrganizationSwitcher hidePersonal /> */}
+			Organization Id Page
+		</div>
 	);
 }
 
