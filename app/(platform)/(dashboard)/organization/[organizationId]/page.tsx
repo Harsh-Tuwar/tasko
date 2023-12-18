@@ -1,7 +1,6 @@
 import React from 'react';
-import { create } from '@/actions/create-boards';
-import { Button } from '@/components/ui/button';
 import { db } from '@/lib/db';
+
 import Board from './board';
 import { Form } from './form';
 
