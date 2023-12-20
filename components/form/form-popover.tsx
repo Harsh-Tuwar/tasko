@@ -1,5 +1,9 @@
 'use client';
 
+import { toast } from 'sonner';
+import { X } from 'lucide-react';
+import { ElementRef, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { useAction } from '@/hooks/useActions';
 import { Button } from '@/components/ui/button';
@@ -14,8 +18,6 @@ import {
 import { FormInput } from './form-input';
 import { FormSubmit } from './form-submit';
 
-import { toast } from 'sonner';
-import { X } from 'lucide-react';
 import FormPicker from './form-picker';
 
 
@@ -32,10 +34,14 @@ const FormPopover = ({
 	side = 'bottom',
 	sideOffset = 0
 }: FormPopoverProps) => {
+	const closeRef = useRef<ElementRef<"button">>(null);
+	const router = useRouter();
+
 	const { execute, fieldErrors } = useAction(createBoard, {
 		onSuccess: (data) => {
-			console.log({ data });
 			toast.success('Board created');
+			closeRef.current?.click();
+			router.push(`/board/${data.id}`);
 		},
 		onError: (err) => {
 			console.error({ err });
@@ -64,7 +70,7 @@ const FormPopover = ({
 				<div className='text-sm font-medium text-center text-neutral-600 pb-4'>
 					Create board
 				</div>
-				<PopoverClose asChild>
+				<PopoverClose asChild ref={closeRef}>
 					<Button
 						className='h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600'
 						variant={'ghost'}
