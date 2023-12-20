@@ -8,6 +8,9 @@ import { useFormStatus } from 'react-dom';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
+import { defaultImages } from '@/constants/images';
+import Link from 'next/link';
+
 interface FormPickerProps {
 	id: string;
 	errors?: Record<string, string[] | undefined>;
@@ -20,7 +23,7 @@ const FormPicker = ({
 	const { pending } = useFormStatus();
 	const [isLoading, setIsLoading] = useState(true);
 	const [selectedImgId, setSelectedImgId] = useState(null);
-	const [images, setImages] = useState<Array<Record<string, any>>>([]);
+	const [images, setImages] = useState<Array<Record<string, any>>>(defaultImages);
 
 	useEffect(() => {
 		const fetchImages = async () => {
@@ -39,7 +42,7 @@ const FormPicker = ({
 				}
 			} catch (error) {
 				console.log(error);
-				setImages([]);
+				setImages(defaultImages);
 			} finally {
 				setIsLoading(false);
 			}
@@ -81,6 +84,11 @@ const FormPicker = ({
 								alt='Unsplash image'
 								className='object-cover rounded-sm'
 							/>
+							<Link
+								href={img.links.html}
+								target='_blank'
+								className='opacity-0 group-hover:opacity-100 absolute bottom-0 w-full text-[10px] truncate text-white hover:underline p-1 bg-black/50'
+							>{img.user.name}</Link>
 						</div>
 					)
 				})}
