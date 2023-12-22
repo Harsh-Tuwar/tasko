@@ -13,6 +13,7 @@ import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from '@/compone
 
 import { useAction } from '@/hooks/useActions';
 import { deleteList } from '@/actions/delete-list';
+import { copyList } from '@/actions/copy-list';
 
 interface ListOptionsProps {
 	data: List;
@@ -35,6 +36,17 @@ const ListOptions = ({
 		}
 	});
 
+	const { execute: executeCopy } = useAction(copyList, {
+		onSuccess: (data) => {
+			toast.success(`List "${data.title}" copied.`);
+			closeRef.current?.click();
+		},
+		onError: (err) => {
+			toast.error(err);
+		}
+	});
+
+
 	const onDelete = (formData: FormData) => {
 		const id = formData.get('id') as string;
 		const boardId = formData.get('boardId') as string;
@@ -43,7 +55,17 @@ const ListOptions = ({
 			id,
 			boardId
 		});
-	}
+	};
+
+	const onCopy = (formData: FormData) => {
+		const id = formData.get('id') as string;
+		const boardId = formData.get('boardId') as string;
+
+		executeCopy({
+			id,
+			boardId
+		});
+	};
 
 	return (
 		<Popover>
@@ -74,7 +96,7 @@ const ListOptions = ({
 				>
 					Add Card...
 				</Button>
-				<form>
+				<form action={onCopy}>
 					<input hidden name='id' id='id' value={data.id} />
 					<input hidden name='boardId' id='boardId' value={data.boardId} />
 					<FormSubmit
