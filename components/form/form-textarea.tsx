@@ -14,10 +14,10 @@ interface FormTextAreaProps {
 	placeholder?: string;
 	required?: boolean;
 	disabled?: boolean;
-	className: string;
-	errors: Record<string, string[] | undefined>;
+	className?: string;
+	errors?: Record<string, string[] | undefined>;
 	onBlur?: () => void;
-	onClick: () => void;
+	onClick?: () => void;
 	onKeyDown?: KeyboardEventHandler<HTMLTextAreaElement> | undefined;
 	defaultValue?: string;
 }
@@ -67,7 +67,6 @@ const FormTextArea = forwardRef<HTMLTextAreaElement, FormTextAreaProps>(({
 				/>
 			</div>
 			<FormErrors id={id} errors={errors} />
-			FormTextArea
 		</div>
 	)
 })
