@@ -1,12 +1,22 @@
 'use client';
 
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { CardWithList } from '@/types/types';
+import { useQuery } from '@tanstack/react-query';
 import { useCardModal } from '@/hooks/use-card-modal';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { fetcher } from '@/lib/fetcher';
+
+import Header from './header';
 
 const CardModal = () => {
 	const id = useCardModal((state) => state.id);
 	const isOpen = useCardModal((state) => state.isOpen);
 	const onClose = useCardModal((state) => state.onClose);
+
+	const { data: cardData } = useQuery<CardWithList>({
+		queryKey: ["card", id],
+		queryFn: () => fetcher(`/api/cards/${id}`),
+	});
 
 	return (
 		<Dialog
@@ -14,7 +24,7 @@ const CardModal = () => {
 			onOpenChange={onClose}
 		>
 			<DialogContent>
-				Im a modal
+				{!cardData ? <Header.Skeleton /> : <Header data={cardData} />}
 			</DialogContent>
 		</Dialog>
 	);
