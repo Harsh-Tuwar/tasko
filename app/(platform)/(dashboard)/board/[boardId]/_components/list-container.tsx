@@ -1,12 +1,16 @@
 'use client';
 
+import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
 import { ListWithCards } from '@/types/types';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 
 import ListForm from './list-form';
 import ListItem from './list-item';
 
-import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import { useAction } from '@/hooks/useActions';
+import { updateListOrder } from '@/actions/update-list-order';
+import { updateCardOrder } from '@/actions/update-card-order';
 
 interface ListContainerProps {
 	data: ListWithCards[];
@@ -23,6 +27,24 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
 
 const ListContainer = ({ data, boardId }: ListContainerProps) => {
 	const [orderedData, setOrderedData] = useState(data);
+
+	const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
+		onSuccess: (data) => {
+			toast.success('List reordered!');
+		},
+		onError: (err) => {
+			toast.error(err);
+		}
+	});
+
+	const { execute: executeUpdateCardOrder } = useAction(updateCardOrder, {
+		onSuccess: (data) => {
+			toast.success('Card reordered!');
+		},
+		onError: (err) => {
+			toast.error(err);
+		}
+	})
 
 	// optimistic updates
 	useEffect(() => {
@@ -53,6 +75,10 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
 			).map((item, index) => ({ ...item, order: index }));
 
 			setOrderedData(items);
+			executeUpdateListOrder({
+				items: items,
+				boardId: boardId
+			});
 		}
 
 		if (type === 'card') {
@@ -75,7 +101,7 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
 				destList.cards = [];
 			}
 
-			// moving the card in the same order
+			// moving the card in the same list
 			if (source.droppableId === destination.droppableId) {
 				const reorderedCards = reorder(
 					sourceList.cards,
@@ -88,6 +114,11 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
 				sourceList.cards = reorderedCards;
 
 				setOrderedData(newOrderedData);
+
+				executeUpdateCardOrder({
+					boardId,
+					items: reorderedCards
+				});
 			} else {
 				// moves to another list
 				const [movedCard] = sourceList.cards.splice(source.index, 1);
@@ -103,6 +134,10 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
 				destList.cards.forEach((card, indx) => card.order = indx);
 				
 				setOrderedData(newOrderedData);
+				executeUpdateCardOrder({
+					boardId,
+					items: destList.cards
+				});
 			}
 		}
 	};
