@@ -59,7 +59,7 @@ const Sidebar = ({ storageKey = 't-sidebar-state' }: SidebarProps) => {
 				<span className='pl-4'>
 					Workspaces
 				</span>
-				<Button className='ml-auto' value={'ghost'} size={'icon'} type='button' asChild>
+				<Button className='ml-auto' variant={'ghost'} size={'icon'} type='button' asChild>
 					<Link href='/select-org'>
 						<Plus className='h-4 w-4'/>
 					</Link>
