@@ -1,7 +1,11 @@
 
+<img width="1511" alt="Screenshot 2023-12-25 at 12 32 10 PM" src="https://github.com/Harsh-Tuwar/tasko/assets/38749882/b05c71dd-7432-4684-b379-814c4352caaf">
+
+<img width="1511" alt="Screenshot 2023-12-25 at 7 39 34 PM" src="https://github.com/Harsh-Tuwar/tasko/assets/38749882/4192efc7-7306-43e9-8ee8-1675747b8ce5">
+
 This is a repository for Fullstack Task Management App built with Next.js 14, Server Actions, React, Prisma, Stripe, Tailwind, MySQL
 
-Key Features:
+## Key Features:
 - Auth 
 - Organizations / Workspaces
 - Board creation
